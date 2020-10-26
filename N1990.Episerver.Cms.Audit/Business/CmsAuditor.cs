@@ -102,21 +102,20 @@ namespace N1990.Episerver.Cms.Audit.Business
                 .Select(contentUsage => new
                 {
                     ContentLink = contentUsage.ContentLink.ToReferenceWithoutVersion(),
-                    Name = contentUsage.Name
                 })
                 .Distinct()
                 .Select(distinctContentUsage => new
                 {
-                    ContentLink = distinctContentUsage.ContentLink,
-                    Name = distinctContentUsage.Name,
                     ContentItem = _contentRepository.Get<IContent>(distinctContentUsage.ContentLink)
                 });
+
+            contentModelUsages = contentModelUsages.Distinct();
 
             foreach (var cmu in contentModelUsages)
             {
                 var localRef = ContentReference.Parse("4");
-                var siteDefinition = _siteDefinitionResolver.GetByContent(cmu.ContentLink, true);
-                var isLocalBlock = _contentRepository.GetAncestors(cmu.ContentLink).Any(ic => ic.ContentLink.ID == localRef.ID);
+                var siteDefinition = _siteDefinitionResolver.GetByContent(cmu.ContentItem.ContentLink, true);
+                var isLocalBlock = _contentRepository.GetAncestors(cmu.ContentItem.ContentLink).Any(ic => ic.ContentLink.ID == localRef.ID);
 
                 IContent parentPage = cmu.ContentItem;
                 if (isLocalBlock) {
@@ -144,8 +143,8 @@ namespace N1990.Episerver.Cms.Audit.Business
 
                 contentTypeAudit.Usages.Add(new ContentTypeAudit.ContentItem
                 {
-                    Name = cmu.Name,
-                    ContentLink = cmu.ContentLink,
+                    Name = cmu.ContentItem.Name,
+                    ContentLink = cmu.ContentItem.ContentLink,
                     SiteId = siteDefinition?.Id ?? Guid.Empty,
                     Parent = includeParentDetail && cmu.ContentItem.ParentLink != ContentReference.EmptyReference
                         ? new ContentTypeAudit.ContentItem
@@ -155,7 +154,7 @@ namespace N1990.Episerver.Cms.Audit.Business
                         }
                         : null,
                     PageReferences = includeReferences
-                        ? _contentRepository.GetReferencesToContent(cmu.ContentLink, true)
+                        ? _contentRepository.GetReferencesToContent(cmu.ContentItem.ContentLink, true)
                             .Select(rtc => new ContentTypeAudit.ContentItem.PageReference
                             {
                                 Name = rtc.OwnerName,

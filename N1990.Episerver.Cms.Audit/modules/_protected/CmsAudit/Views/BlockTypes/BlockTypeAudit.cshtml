@@ -17,6 +17,7 @@
     <td colspan="10">
         <table class="table table-responsive">
             <tr>
+                <th>Block ID</th>
                 <th>Name & Link</th>
                 <th>Antal References</th>
                 <th>Block Location</th>
@@ -25,6 +26,7 @@
             @foreach (var usage in Model.Usages.OrderByDescending(u => u.PageReferences.Count))
             {
                 <tr>
+                    <td>@usage.ContentLink</td>
                     <td><a target="_blank" href="/episerver/cms/#viewsetting=&context=epi.cms.contentdata:///@usage.ContentLink">@usage.Name</a></td>
                     <td>@usage.PageReferences.Count</td>
                     <td>@(usage.LocalBlock ? "Local": "Global")</td>
