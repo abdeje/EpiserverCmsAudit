@@ -114,7 +114,33 @@ namespace N1990.Episerver.Cms.Audit.Business
 
             foreach (var cmu in contentModelUsages)
             {
+                var localRef = ContentReference.Parse("4");
                 var siteDefinition = _siteDefinitionResolver.GetByContent(cmu.ContentLink, true);
+                var isLocalBlock = _contentRepository.GetAncestors(cmu.ContentLink).Any(ic => ic.ContentLink.ID == localRef.ID);
+
+                IContent parentPage = cmu.ContentItem;
+                if (isLocalBlock) {
+                    while (parentPage != null && !typeof(PageData).IsAssignableFrom(parentPage.GetOriginalType()))
+                    {
+                        if (parentPage is ContentAssetFolder folder && _contentRepository.TryGet(folder.ContentOwnerID, out parentPage))
+                        {
+
+                        }
+                        else if (parentPage.ParentLink.ID != 1 && _contentRepository.TryGet(parentPage.ParentLink, out IContent temp))
+                        {
+                            parentPage = temp;
+                        }
+                        else
+                        {
+                            parentPage = null;
+                        };
+
+                    }
+                } else {
+                    parentPage = null;
+                }
+
+
 
                 contentTypeAudit.Usages.Add(new ContentTypeAudit.ContentItem
                 {
@@ -136,7 +162,10 @@ namespace N1990.Episerver.Cms.Audit.Business
                                 ContentLink = rtc.OwnerID,
                                 SiteId = _siteDefinitionResolver.GetByContent(rtc.OwnerID, true)?.Id ?? Guid.Empty
                             }).ToList()
-                        : new List<ContentTypeAudit.ContentItem.PageReference>()
+                        : new List<ContentTypeAudit.ContentItem.PageReference>(),
+
+                    LocalBlock = isLocalBlock,
+                    BlockParentPage = parentPage?.ContentLink,
                 });
 
             }

@@ -42,6 +42,8 @@ namespace N1990.Episerver.Cms.Audit.Business
             var blockTypes = cmsAuditor.GetContentTypesOfType<BlockType>();
 
             int usesfound = 0;
+            int typecount = 0;
+
             BlockTypeUse.CleanUp();
 
             foreach (var blockType in blockTypes)
@@ -57,7 +59,9 @@ namespace N1990.Episerver.Cms.Audit.Business
                 BlockTypeUse.Save(blockTypeUse);
 
                 usesfound += audit.Usages.Count();
-                OnStatusChanged(String.Format("Done with {0}", audit.FullName));
+                typecount++;
+                //OnStatusChanged(String.Format("Done with {0}", audit.FullName));
+                OnStatusChanged(String.Format("Done with {0} out of {1} types", typecount, blockTypes.Count()));
 
                 if (_stopSignaled)
                 {

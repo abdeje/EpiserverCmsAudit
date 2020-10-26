@@ -36,6 +36,10 @@ namespace N1990.Episerver.Cms.Audit.Models
 			public ContentReference ContentLink { get; set; }
             public ContentItem Parent { get; set; }
 
+			public ContentReference BlockParentPage { get; set; }
+
+			public bool LocalBlock { get; set; }
+
             // Used for block references
             public List<PageReference> PageReferences { get; set; }
             public class PageReference
