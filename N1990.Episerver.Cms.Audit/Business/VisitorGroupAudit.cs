@@ -1,13 +1,13 @@
-﻿using System;
-using EPiServer;
+﻿using EPiServer;
 using EPiServer.Core;
 using EPiServer.Personalization.VisitorGroups;
 using EPiServer.PlugIn;
 using EPiServer.Scheduler;
-using EPiServer.ServiceLocation;
-using System.Linq;
-using N1990.Episerver.Cms.Audit.Models;
 using EPiServer.Security;
+using EPiServer.ServiceLocation;
+using N1990.Episerver.Cms.Audit.Models;
+using System;
+using System.Linq;
 
 namespace N1990.Episerver.Cms.Audit.Business
 {
@@ -41,7 +41,7 @@ namespace N1990.Episerver.Cms.Audit.Business
             //Add implementation
             var repo = ServiceLocator.Current.GetInstance<IContentRepository>();
             var vgrepo = ServiceLocator.Current.GetInstance<IVisitorGroupRepository>();
-            var visitorgrouplist=vgrepo.List().ToList();
+            var visitorgrouplist = vgrepo.List().ToList();
             int cnt = 0;
             int usesfound = 0;
             VisitorGroupUse.CleanUp();
@@ -52,11 +52,11 @@ namespace N1990.Episerver.Cms.Audit.Business
                 var c = repo.Get<IContentData>(cr);
                 if (c is ISecurable)
                 {
-                    var sec=(c as ISecurable).GetSecurityDescriptor();
-                    if(sec is ContentAccessControlList)
+                    var sec = (c as ISecurable).GetSecurityDescriptor();
+                    if (sec is ContentAccessControlList)
                     {
                         var cacl = (sec as ContentAccessControlList);
-                        foreach(var ca in cacl.Where(cac => cac.Value.EntityType == SecurityEntityType.VisitorGroup))
+                        foreach (var ca in cacl.Where(cac => cac.Value.EntityType == SecurityEntityType.VisitorGroup))
                         {
                             usesfound++;
                             VisitorGroupUse vgu = new VisitorGroupUse();
@@ -101,7 +101,7 @@ namespace N1990.Episerver.Cms.Audit.Business
                         if (ca == null) continue;
                         foreach (var f in ca.Fragments.Where(fr => fr is EPiServer.Core.Html.StringParsing.PersonalizedContentFragment))
                         {
-                            
+
                             var j = f as EPiServer.Core.Html.StringParsing.PersonalizedContentFragment;
                             var roles = j.GetRoles();
                             foreach (var r in roles)
@@ -130,7 +130,7 @@ namespace N1990.Episerver.Cms.Audit.Business
             }
 
 
-            return string.Format("Done looking through content. Found {0} uses of visitor groups in {1} content elements",usesfound,cnt);
+            return string.Format("Done looking through content. Found {0} uses of visitor groups in {1} content elements", usesfound, cnt);
         }
     }
 }

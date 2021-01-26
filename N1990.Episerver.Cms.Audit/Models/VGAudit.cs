@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace N1990.Episerver.Cms.Audit.Models
 {
@@ -23,7 +21,7 @@ namespace N1990.Episerver.Cms.Audit.Models
         public string Name { get; set; }
         public int CriteriaCount { get; set; }
         public Guid Id { get; set; }
-        public List<VisitorGroupUse> Usages{ get; set; }
+        public List<VisitorGroupUse> Usages { get; set; }
 
         public int PageCount
         {
@@ -34,7 +32,9 @@ namespace N1990.Episerver.Cms.Audit.Models
             get { return Usages.Where(u => u.ContentType == "Block").Count(); }
         }
 
-        public IEnumerable<ContentReference> ContentItems { get
+        public IEnumerable<ContentReference> ContentItems
+        {
+            get
             {
                 return Usages.Select(vu => vu.Content).Distinct();
             }
@@ -48,7 +48,7 @@ namespace N1990.Episerver.Cms.Audit.Models
 
     }
 
-    
+
 
 
 }

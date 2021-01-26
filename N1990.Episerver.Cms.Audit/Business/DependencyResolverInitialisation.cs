@@ -17,7 +17,8 @@ namespace N1990.Episerver.Cms.Audit.Business
 
         public void ConfigureContainer(ServiceConfigurationContext context)
         {
-            context.ConfigurationComplete += (o, e) => {
+            context.ConfigurationComplete += (o, e) =>
+            {
                 context.Services.AddTransient<ICmsAuditor, CmsAuditor>();
             };
         }

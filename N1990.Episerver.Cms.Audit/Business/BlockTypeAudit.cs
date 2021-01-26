@@ -1,11 +1,11 @@
-﻿using System;
+﻿using EPiServer.DataAbstraction;
 using EPiServer.PlugIn;
 using EPiServer.Scheduler;
 using EPiServer.ServiceLocation;
-using System.Linq;
 using N1990.Episerver.Cms.Audit.Models;
-using EPiServer.DataAbstraction;
 using Newtonsoft.Json;
+using System;
+using System.Linq;
 
 namespace N1990.Episerver.Cms.Audit.Business
 {
@@ -68,7 +68,7 @@ namespace N1990.Episerver.Cms.Audit.Business
                     return "Job was cancelled";
                 }
             }
-            return string.Format("Done looking through content. Found {0} block types used {1} time(s)",blockTypes.Count(),usesfound);
+            return string.Format("Done looking through content. Found {0} block types used {1} time(s)", blockTypes.Count(), usesfound);
         }
     }
 }

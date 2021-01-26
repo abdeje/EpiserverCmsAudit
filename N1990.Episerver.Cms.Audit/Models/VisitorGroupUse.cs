@@ -3,9 +3,6 @@ using EPiServer.Data;
 using EPiServer.Data.Dynamic;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace N1990.Episerver.Cms.Audit.Models
 {

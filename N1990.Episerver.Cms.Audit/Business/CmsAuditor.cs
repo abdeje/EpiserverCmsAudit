@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using EPiServer;
+﻿using EPiServer;
 using EPiServer.Core;
 using EPiServer.DataAbstraction;
 using EPiServer.Personalization.VisitorGroups;
@@ -12,6 +7,10 @@ using EPiServer.ServiceLocation;
 using EPiServer.Web;
 using N1990.Episerver.Cms.Audit.Models;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 
 namespace N1990.Episerver.Cms.Audit.Business
 {
@@ -92,7 +91,7 @@ namespace N1990.Episerver.Cms.Audit.Business
             var contentTypeAudit = new ContentTypeAudit
             {
                 ContentTypeId = contentTypeId,
-                Name = contentType.Name,
+                Name = string.IsNullOrEmpty(contentType.DisplayName) ? contentType.Name : contentType.DisplayName,
                 Usages = new List<ContentTypeAudit.ContentItem>()
             };
 
@@ -118,7 +117,8 @@ namespace N1990.Episerver.Cms.Audit.Business
                 var isLocalBlock = _contentRepository.GetAncestors(cmu.ContentItem.ContentLink).Any(ic => ic.ContentLink.ID == localRef.ID);
 
                 IContent parentPage = cmu.ContentItem;
-                if (isLocalBlock) {
+                if (isLocalBlock)
+                {
                     while (parentPage != null && !typeof(PageData).IsAssignableFrom(parentPage.GetOriginalType()))
                     {
                         if (parentPage is ContentAssetFolder folder && _contentRepository.TryGet(folder.ContentOwnerID, out parentPage))
@@ -135,7 +135,9 @@ namespace N1990.Episerver.Cms.Audit.Business
                         };
 
                     }
-                } else {
+                }
+                else
+                {
                     parentPage = null;
                 }
 
@@ -183,7 +185,7 @@ namespace N1990.Episerver.Cms.Audit.Business
         {
             var use = BlockTypeUse.Get(contentTypeId);
 
-            if(use != null)
+            if (use != null)
             {
                 return JsonConvert.DeserializeObject<ContentTypeAudit>(use.AuditJson);
             }

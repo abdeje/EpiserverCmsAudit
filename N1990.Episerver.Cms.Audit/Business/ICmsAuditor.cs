@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using EPiServer.Scheduler;
+﻿using EPiServer.Scheduler;
 using EPiServer.Web;
 using N1990.Episerver.Cms.Audit.Models;
+using System;
+using System.Collections.Generic;
 
 namespace N1990.Episerver.Cms.Audit.Business
 {

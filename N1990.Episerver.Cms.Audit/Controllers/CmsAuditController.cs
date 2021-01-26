@@ -1,33 +1,32 @@
+using N1990.Episerver.Cms.Audit.Business;
+using N1990.Episerver.Cms.Audit.Models;
 using System;
 using System.Linq;
 using System.Web.Mvc;
-using EPiServer.DataAbstraction;
-using N1990.Episerver.Cms.Audit.Business;
-using N1990.Episerver.Cms.Audit.Models;
 
 namespace N1990.Episerver.Cms.Audit.Controllers
 {
-    [Authorize(Roles = "WebEditors,WebAdmins,Administrators")]
+    [Authorize(Roles = "CmsEditors,CmsAdmins,Administrators")]
     public class CmsAuditController : Controller
     {
         private readonly ICmsAuditor _cmsAuditor;
 
         public CmsAuditController(ICmsAuditor cmsAuditor)
-	    {
-	        _cmsAuditor = cmsAuditor;
-	    }
+        {
+            _cmsAuditor = cmsAuditor;
+        }
 
-		public ActionResult Index()
-		{
-			var model = new CmsAuditPage()
-			{
-				Sites = _cmsAuditor.GetSiteDefinitions()
+        public ActionResult Index()
+        {
+            var model = new CmsAuditPage()
+            {
+                Sites = _cmsAuditor.GetSiteDefinitions()
                     .Where(sd => sd.Id != Guid.Empty)
                     .Select(sd => new SiteAudit
-				{
-                    SiteDefo = sd
-				}).ToList()
-			};
+                    {
+                        SiteDefo = sd
+                    }).ToList()
+            };
             return View(model);
         }
 

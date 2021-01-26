@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using EPiServer.Framework.Localization;
-using EPiServer.Security;
+﻿using EPiServer.Framework.Localization;
 using EPiServer.Shell;
 using EPiServer.Shell.Navigation;
+using System.Collections.Generic;
 
 namespace N1990.Episerver.Cms.Audit.Business
 {
@@ -21,8 +20,8 @@ namespace N1990.Episerver.Cms.Audit.Business
         {
             var menuText = _localizationService.GetString("/cmsaudit/menus/audit", "Audit");
 
-            var sectionMenu = 
-                new DropDownMenuItem(menuText, MenuPath) {SortIndex = int.MaxValue, IsAvailable = (_) => true};
+            var sectionMenu =
+                new DropDownMenuItem(menuText, MenuPath) { SortIndex = int.MaxValue, IsAvailable = (_) => true };
 
             var menuSites =
                 new UrlMenuItem(

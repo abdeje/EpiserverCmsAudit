@@ -1,18 +1,18 @@
-using System.Web.Mvc;
 using EPiServer.DataAbstraction;
 using N1990.Episerver.Cms.Audit.Business;
 using N1990.Episerver.Cms.Audit.Models;
+using System.Web.Mvc;
 
 namespace N1990.Episerver.Cms.Audit.Controllers
 {
-    [Authorize(Roles = "WebEditors,WebAdmins,Administrators")]
+    [Authorize(Roles = "CmsEditors,CmsAdmins,Administrators")]
     public class BlockTypesController : Controller
     {
         private readonly ICmsAuditor _cmsAuditor;
 
         public BlockTypesController(ICmsAuditor cmsAuditor)
-	    {
-	        _cmsAuditor = cmsAuditor;
+        {
+            _cmsAuditor = cmsAuditor;
         }
 
         public ActionResult Index()
